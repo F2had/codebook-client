@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild-wasm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 

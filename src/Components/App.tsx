@@ -1,5 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import { useState, useRef } from "react";
+import CodeEditor from "./CodeEditor";
 import { fetchPlugin } from "../plugins/fetch-plugin";
 import { unpkgPathPlugin } from "../plugins/unpkg-path-plugin";
 
@@ -10,7 +11,7 @@ const App = () => {
   const onClick = async () => {
     //reset the iframe content
     iframe.current!.srcdoc = html;
-    
+
     const result = await esbuild.build({
       entryPoints: ["index.js"],
       bundle: true,
@@ -49,6 +50,9 @@ const App = () => {
 
   return (
     <>
+   
+    <CodeEditor  />
+
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}

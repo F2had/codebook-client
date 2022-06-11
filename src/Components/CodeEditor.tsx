@@ -1,22 +1,60 @@
+import { FC, useRef } from "react";
 import MoancoEditor from "@monaco-editor/react";
+import prettier from "prettier";
+import parser from "prettier/parser-babel";
 
-const CodeEditor = () => {
+interface CodeEditorProps {
+  initialValue: string;
+  onChange: (value: string) => void;
+}
+
+const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
+  const editorRef = useRef<any>();
+
+  const onEditorChange = (value: string | undefined) => {
+    onChange(value || "");
+  };
+  const onFormatClick = () => {
+    const value = editorRef.current.getValue();
+
+    const formatted = prettier.format(value, {
+      parser: "babel",
+      plugins: [parser],
+      trailingComma: "all",
+      singleQuote: true,
+      printWidth: 80,
+      tabWidth: 2,
+      useTabs: false,
+      semi: true,
+    });
+    
+    editorRef.current.setValue(formatted);
+  };
   return (
-    <MoancoEditor
-      options={{
-        wordWrap: "on",
-        minimap: { enabled: false },
-        showUnused: false,
-        folding: false,
-        lineNumbersMinChars: 3,
-        fontSize: 14,
-        scrollBeyondLastLine: false,
-        automaticLayout: true,
-      }}
-      language="javascript"
-      theme="vs-dark"
-      height="500px"
-    />
+    <>
+      <button onClick={onFormatClick}>Format</button>
+      <MoancoEditor
+        value={initialValue}
+        onMount={(editor) => {
+          editorRef.current = editor;
+        }}
+        onChange={(value) => onEditorChange(value)}
+        options={{
+          tabSize: 2,
+          wordWrap: "on",
+          minimap: { enabled: false },
+          showUnused: false,
+          folding: false,
+          lineNumbersMinChars: 3,
+          fontSize: 14,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+        }}
+        language="javascript"
+        theme="vs-dark"
+        height="500px"
+      />
+    </>
   );
 };
 

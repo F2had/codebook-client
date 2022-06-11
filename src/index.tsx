@@ -2,7 +2,8 @@ import * as esbuild from "esbuild-wasm";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import App from "./test";
+import App from "./Components/App";
+
 const esbuild_wasmURL = "https://unpkg.com/esbuild-wasm@0.14.43/esbuild.wasm";
 (async () => {
   await esbuild.initialize({

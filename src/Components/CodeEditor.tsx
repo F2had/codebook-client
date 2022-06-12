@@ -3,7 +3,7 @@ import MoancoEditor from "@monaco-editor/react";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
 import "./code-editor.css";
-import './syntax.css';
+import "./syntax.css";
 
 interface CodeEditorProps {
   initialValue: string;
@@ -19,16 +19,18 @@ const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   const onFormatClick = () => {
     const value = editorRef.current.getValue();
 
-    const formatted = prettier.format(value, {
-      parser: "babel",
-      plugins: [parser],
-      trailingComma: "all",
-      singleQuote: true,
-      printWidth: 80,
-      tabWidth: 2,
-      useTabs: false,
-      semi: true,
-    });
+    const formatted = prettier
+      .format(value, {
+        parser: "babel",
+        plugins: [parser],
+        trailingComma: "all",
+        singleQuote: true,
+        printWidth: 80,
+        tabWidth: 2,
+        useTabs: false,
+        semi: true,
+      })
+      .replace(/\n$/g, "");
 
     editorRef.current.setValue(formatted);
   };

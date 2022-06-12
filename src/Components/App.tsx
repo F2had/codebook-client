@@ -54,12 +54,12 @@ const App = () => {
         initialValue="//Type your code here."
         onChange={(value) => setInput(value)}
       />
-      <div>
-        <button className="btn" onClick={onClick}>
+      <div className="level-right">
+        <button className="button is-primary is-dark is-outlined " onClick={onClick}>
           Submit
         </button>
       </div>
-      <iframe ref={iframe} srcDoc={html} sandbox="allow-scripts"></iframe>
+      <iframe title="preview" ref={iframe} srcDoc={html} sandbox="allow-scripts"></iframe>
     </>
   );
 };

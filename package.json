@@ -12,6 +12,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
+    "bulmaswatch": "^0.8.1",
     "esbuild-wasm": "^0.14.43",
     "localforage": "^1.10.0",
     "prettier": "^2.6.2",

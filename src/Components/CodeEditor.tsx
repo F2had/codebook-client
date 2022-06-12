@@ -2,6 +2,8 @@ import { FC, useRef } from "react";
 import MoancoEditor from "@monaco-editor/react";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
+import "./code-editor.css";
+import './syntax.css';
 
 interface CodeEditorProps {
   initialValue: string;
@@ -27,12 +29,17 @@ const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
       useTabs: false,
       semi: true,
     });
-    
+
     editorRef.current.setValue(formatted);
   };
   return (
-    <>
-      <button onClick={onFormatClick}>Format</button>
+    <div className="editor-wrapper">
+      <button
+        className="button-format button is-primary is-small"
+        onClick={onFormatClick}
+      >
+        Format
+      </button>
       <MoancoEditor
         value={initialValue}
         onMount={(editor) => {
@@ -54,7 +61,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
         theme="vs-dark"
         height="500px"
       />
-    </>
+    </div>
   );
 };
 

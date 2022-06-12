@@ -24,7 +24,7 @@ export const fetchPlugin = (input: string) => {
       });
 
       build.onLoad({ filter: /\.css$/ }, async (args: any) => {
-        const { data, request } = await axios.get(args.path);
+        const { data } = await axios.get(args.path);
 
         const contents = 
         `

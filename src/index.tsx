@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 
 import App from "./Components/App";
 
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
+
 const esbuild_wasmURL = "https://unpkg.com/esbuild-wasm@0.14.43/esbuild.wasm";
 (async () => {
   await esbuild.initialize({

@@ -17,7 +17,6 @@ export const unpkgPathPlugin = () => {
 
       // handle relative path
       build.onResolve({ filter: /^\.+\// }, async (args: any) => {
-        const { path } = args;
         return {
           path: new URL(args.path, `https://unpkg.com${args.resolveDir}/`).href,
           namespace: 'a',

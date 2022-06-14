@@ -10,6 +10,8 @@ interface CodeEditorProps {
   onChange: (value: string) => void;
 }
 
+
+
 const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   const editorRef = useRef<any>();
 
@@ -61,7 +63,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ initialValue, onChange }) => {
         }}
         language="javascript"
         theme="vs-dark"
-        height="500px"
+        height="100%"
       />
     </div>
   );

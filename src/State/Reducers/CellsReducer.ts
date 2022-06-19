@@ -29,7 +29,7 @@ const CellsReducer = produce(
           direction === "up" ? currentIndex - 1 : currentIndex + 1;
 
         if (newIndex < 0 || newIndex >= state.order.length) {
-          return;
+          return state;
         }
         state.order[currentIndex] = state.order[newIndex];
         state.order[newIndex] = action.payload.id;

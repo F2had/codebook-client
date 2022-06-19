@@ -1,6 +1,8 @@
+import { Provider } from "react-redux";
+
+import CellList from "./CellList";
 import CodeCell from "./CodeCell";
 import TextEditor from "./TextEditor";
-import { Provider } from "react-redux";
 import store from "../State/store";
 
 const App = () => {
@@ -8,7 +10,8 @@ const App = () => {
     <Provider store={store}>
       <>
         {/* <CodeCell /> */}
-        <TextEditor />
+        {/* <TextEditor /> */}
+        <CellList  />
       </>
     </Provider>
   );

@@ -4,6 +4,7 @@ import logger from "redux-logger";
 
 import reducers from "./Reducers";
 import rootSaga from "../Sagas";
+// import { ActionType } from "./Actions/Types";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: reducers,
   middleware: [sagaMiddleware, logger],
 });
+
 
 sagaMiddleware.run(rootSaga);
 

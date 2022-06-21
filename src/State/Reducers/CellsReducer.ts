@@ -40,28 +40,27 @@ const CellsReducer = produce(
         return state;
       case ActionType.UPDATE_CELL:
         const { id, content } = action.payload;
-        console.log("🚀 => file: CellsReducer.ts => line 44 => state", id);
         state.data[action.payload.id].content = content;
         return state;
-      case ActionType.INSERT_CELL_BEFORE:
+      case ActionType.INSERT_CELL_AFTER:
         const { type } = action.payload;
-        
+
         let newId = randomId();
         while (checkIDExists(newId, state)) {
             newId = randomId();
         }
         const newCell: Cell = {
-            id: action.payload.id || newId,
+            id: newId,
             type,
             content: "",
         };
-        state.data[action.payload.id || newId] = newCell;
+        state.data[newId] = newCell;
         const index = state.order.indexOf(action.payload.id? action.payload.id : "");
-      
+        
         if (index === -1) {
-          state.order.push(newId);
+          state.order.unshift(newId);
         } else {
-          state.order.splice(index, 0, newId);
+          state.order.splice(index +1, 0, newId);
         }
         return state;
       default:

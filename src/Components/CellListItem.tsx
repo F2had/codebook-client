@@ -1,37 +1,42 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 
 import { Cell } from "../Types";
+import ActionBar from "./ActionBar";
 import CodeCell from "./CodeCell";
 import TextEditor from "./TextEditor";
-
+import "./CellListItem.css";
 interface CellListItemProps {
   cell: Cell;
 }
 
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
-    const dispatch = useDispatch()
   let child: JSX.Element;
   switch (cell.type) {
     case "code":
-      child = <CodeCell />;
+      child = (
+        <>
+          <div className="action-bar-wrapper">
+            <ActionBar id={cell.id} />
+          </div>
+          <CodeCell cell={cell} />
+        </>
+      );
       break;
     case "markdown":
-      child = <TextEditor />;
+      child = (
+        <>
+          <div className="action-bar-wrapper">
+            <ActionBar id={cell.id} />
+          </div>
+          <TextEditor cell={cell} />
+        </>
+      );
       break;
     default:
       child = <div>Unknown cell type</div>;
       break;
   }
-  return <div onClick={(e) => {
-    dispatch({
-        type: 'MOVE_CELL',
-        payload: {
-            id: cell.id,
-            direction: 'up'
-        }
-    })
-  }}>{child} {cell.id}</div>;
+  return <div className="cell-list-item">{child}</div>;
 };
 
 export default CellListItem;

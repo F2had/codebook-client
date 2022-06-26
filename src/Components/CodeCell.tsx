@@ -1,33 +1,43 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import CodeEditor from "./CodeEditor";
 import Preview from "./Preview";
 import Resizeable from "./Resizable";
-import bundle from "../Bundler";
+
 import { Cell } from "../Types";
 import { useActions } from "../Hooks/useActions";
+import { useTypedSelector } from "../Hooks/UsedTypedSelector";
 
 interface CodeCellProps {
   cell: Cell;
 }
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState("");
-  const [err, setErr] = useState("");
-  const { updateCell } = useActions();
+  const { updateCell, createBundle } = useActions();
+ const bundle =  useTypedSelector((state) => {
+    console.log("🚀 => file: CodeCell.tsx => line 17 => useTypedSelector => state", state.bundles)
+    if (state.bundles) {
+      return state.bundles[cell.id];
+    }
+  });
+
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const output = await bundle(cell.content);
-      setCode(output?.code ?? "");
-      setErr(output?.err ?? "");
+    const timer = setTimeout( () => {
+       createBundle(cell.id, cell.content);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+  }, [cell.content, cell.id]);
 
   return (
     <Resizeable direction="vertical" width={Infinity} height={300}>
-      <div style={{ height: "calc(100% - 10px)", display: "flex", flexDirection: "row" }}>
+      <div
+        style={{
+          height: "calc(100% - 10px)",
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
         <Resizeable direction="horizontal" width={Infinity} height={300}>
           <CodeEditor
             initialValue={cell.content}
@@ -35,7 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           />
         </Resizeable>
 
-        <Preview code={code} err={err} />
+        {bundle && <Preview code={bundle.code} err={bundle.err} />}
       </div>
     </Resizeable>
   );

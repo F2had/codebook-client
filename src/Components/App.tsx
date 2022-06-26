@@ -11,8 +11,6 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <>
-          {/* <CodeCell /> */}
-          {/* <TextEditor /> */}
           <CellList />
         </>
       </PersistGate>

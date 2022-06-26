@@ -7,21 +7,26 @@ import Resizeable from "./Resizable";
 import { Cell } from "../Types";
 import { useActions } from "../Hooks/useActions";
 import { useTypedSelector } from "../Hooks/UsedTypedSelector";
+import "./CodeCell.css";
 
 interface CodeCellProps {
   cell: Cell;
 }
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions();
- const bundle =  useTypedSelector((state) => {
+  const bundle = useTypedSelector((state) => {
     if (state.bundles) {
       return state.bundles[cell.id];
     }
   });
 
   useEffect(() => {
-    const timer = setTimeout( () => {
-       createBundle(cell.id, cell.content);
+    if (!bundle) {
+      createBundle(cell.id, cell.content);
+      return;
+    }
+    const timer = setTimeout(() => {
+      createBundle(cell.id, cell.content);
     }, 1000);
     return () => {
       clearTimeout(timer);
@@ -44,7 +49,17 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           />
         </Resizeable>
 
-        {bundle && <Preview code={bundle.code} err={bundle.err} />}
+        <div className="progress-wrapper">
+          {!bundle || bundle.isBundling ? (
+            <div className="progress-cover">
+              <progress className="progress is-small is-primary" max="100">
+                Loading...
+              </progress>
+            </div>
+          ) : (
+            <Preview code={bundle.code} err={bundle.err} />
+          )}
+        </div>
       </div>
     </Resizeable>
   );

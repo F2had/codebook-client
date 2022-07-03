@@ -51,7 +51,7 @@ const CellsReducer = produce(
         const newCell: Cell = {
           id: newId,
           type,
-          content: `// you can use the show function to show js/jsx in a cell \n //show(<div>Hello World</div>)`,
+          content: type === 'code' ? `// you can use the show function to show js/jsx in a cell \n //show(<div>Hello World</div>)` : '',
         };
         state.data[newId] = newCell;
         const index = state.order.indexOf(

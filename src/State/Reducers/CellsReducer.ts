@@ -1,4 +1,3 @@
-import { CellType } from "./../../Types/index";
 import produce from "immer";
 
 import { Cell } from "../../Types/index";
@@ -23,7 +22,7 @@ const CellsReducer = produce(
   (state: CellsState = initialState, action: Action) => {
     switch (action.type) {
       case ActionType.MOVE_CELL:
-        const {  direction } = action.payload;
+        const { direction } = action.payload;
         const currentIndex = state.order.indexOf(action.payload.id);
         const newIndex =
           direction === "up" ? currentIndex - 1 : currentIndex + 1;
@@ -39,7 +38,7 @@ const CellsReducer = produce(
         state.order = state.order.filter((id) => id !== action.payload.id);
         return state;
       case ActionType.UPDATE_CELL:
-        const { id, content } = action.payload;
+        const { content } = action.payload;
         state.data[action.payload.id].content = content;
         return state;
       case ActionType.INSERT_CELL_AFTER:
@@ -47,20 +46,22 @@ const CellsReducer = produce(
 
         let newId = randomId();
         while (checkIDExists(newId, state)) {
-            newId = randomId();
+          newId = randomId();
         }
         const newCell: Cell = {
-            id: newId,
-            type,
-            content: "",
+          id: newId,
+          type,
+          content: "",
         };
         state.data[newId] = newCell;
-        const index = state.order.indexOf(action.payload.id? action.payload.id : "");
-        
+        const index = state.order.indexOf(
+          action.payload.id ? action.payload.id : ""
+        );
+
         if (index === -1) {
           state.order.unshift(newId);
         } else {
-          state.order.splice(index +1, 0, newId);
+          state.order.splice(index + 1, 0, newId);
         }
         return state;
       default:

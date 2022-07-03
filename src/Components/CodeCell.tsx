@@ -14,24 +14,67 @@ interface CodeCellProps {
 }
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions();
+
   const bundle = useTypedSelector((state) => {
     if (state.bundles) {
       return state.bundles[cell.id];
     }
   });
 
+  const cells = useTypedSelector((state) => {
+    if (state.cells) {
+      return state.cells;
+    }
+  });
+
+  const joinCellsCode = (cells: any) => {
+    const { data, order } = cells;
+    const orderedCells = order.map((id: string) => data[id]);
+    const cumulativeCode = [
+      `
+      import _React from 'react'
+      import _ReactDOM from 'react-dom'
+
+      const root = document.getElementById("root");
+      const show = (value) => {
+        if (typeof value === 'object') {
+          if (value.$$typeof && value.props) {
+            _ReactDOM.render(value, root);
+          } else {
+            root.innerHTML = JSON.stringify(value);
+          }
+        } else {
+          root.innerHTML = value;
+        }
+      };
+      `,
+    ];
+    for (const c of orderedCells) {
+      if (c.type === "code") {
+        cumulativeCode.push(c.content);
+      }
+
+      if (c.id === cell.id) {
+        break;
+      }
+    }
+    return cumulativeCode;
+  };
+
   useEffect(() => {
     if (!bundle) {
-      createBundle(cell.id, cell.content);
+      const cumulativeCode = joinCellsCode(cells);
+      createBundle(cell.id, cumulativeCode.join("\n"));
       return;
     }
     const timer = setTimeout(() => {
-      createBundle(cell.id, cell.content);
+      const cumulativeCode = joinCellsCode(cells);
+      createBundle(cell.id, cumulativeCode.join("\n"));
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content, cell.id]);
+  }, [cell.id, createBundle, cells]);
 
   return (
     <Resizeable direction="vertical" width={Infinity} height={300}>
@@ -48,7 +91,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={(value) => updateCell(cell.id, value)}
           />
         </Resizeable>
-
         <div className="progress-wrapper">
           {!bundle || bundle.isBundling ? (
             <div className="progress-cover">
